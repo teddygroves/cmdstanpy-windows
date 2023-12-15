@@ -1,0 +1,27 @@
+# This workflow tests bibat by using it to make a project, then running the new project's tests.
+
+name: Install cmdstan on windows and run the bernoulli model
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+        matrix:
+            os: [windows-latest]
+            python-version: ["3.10"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install cmdstanpy
+      run: pip install cmdstanpy
+    - name: Install cmdstan
+      run: install_cmdstan --compiler
+    - name: Run script
+      run: python script.py

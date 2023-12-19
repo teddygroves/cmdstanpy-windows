@@ -22,6 +22,6 @@ jobs:
     - name: Install cmdstanpy
       run: pip install cmdstanpy
     - name: Install cmdstan
-      run: install_cmdstan —version git:develop --compiler
+      run: install_cmdstan --version git:develop --compiler
     - name: Run script
       run: python script.py

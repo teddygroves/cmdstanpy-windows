@@ -21,7 +21,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install cmdstanpy
       run: pip install cmdstanpy
-    - name: Install cmdstan
-      run: install_cmdstan --version git:develop --compiler
+    - name: Install CmdStan (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        install_cmdstan -h
+        install_cxx_toolchain -h
+        $env:TBB_CXXFLAGS = "-D_UCRT"
+        python -m cmdstanpy.install_cmdstan --version ${{ needs.get-cmdstan-version.outputs.version }} --cores 2
+        echo "TBB_CXXFLAGS+=-D_UCRT" >> ~/.cmdstan/cmdstan-${{ needs.get-cmdstan-version.outputs.version }}/make/local
     - name: Run script
       run: python script.py

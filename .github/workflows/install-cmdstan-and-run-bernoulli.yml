@@ -5,18 +5,6 @@ name: Install cmdstan on windows and run the bernoulli model
 on: push
 
 jobs:
-  get-cmdstan-version:
-    # get the latest cmdstan version to use as part of the cache key
-    name: grab version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get CmdStan version
-        id: check-cmdstan
-        run: |
-          python -c 'import requests;print("version="+requests.get("https://api.github.com/repos/stan-dev/cmdstan/releases/latest").json()["tag_name"][1:])' >> $GITHUB_OUTPUT
-    outputs:
-      version: ${{ steps.check-cmdstan.outputs.version }}
-
   build:
 
     runs-on: ${{ matrix.os }}
@@ -40,6 +28,6 @@ jobs:
         install_cxx_toolchain -h
         $env:TBB_CXXFLAGS = "-D_UCRT"
         python -m cmdstanpy.install_cmdstan --version ${{ needs.get-cmdstan-version.outputs.version }} --cores 2
-        echo "TBB_CXXFLAGS+=-D_UCRT" >> ~/.cmdstan/cmdstan-${{ needs.get-cmdstan-version.outputs.version }}/make/local
+        echo "TBB_CXXFLAGS+=-D_UCRT" >> ~/.cmdstan/cmdstan-2.33.1/make/local
     - name: Run script
       run: python script.py

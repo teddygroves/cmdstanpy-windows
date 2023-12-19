@@ -28,6 +28,6 @@ jobs:
         install_cxx_toolchain -h
         $env:TBB_CXXFLAGS = "-D_UCRT"
         python -m cmdstanpy.install_cmdstan --version git:develop --cores 2
-        echo "TBB_CXXFLAGS+=-D_UCRT" >> ~/.cmdstan/cmdstan-2.33.1/make/local
+        echo "TBB_CXXFLAGS+=-D_UCRT" >> ~/.cmdstan/cmdstan-develop/make/local
     - name: Run script
       run: python script.py
